@@ -3,6 +3,7 @@
   "en": "English",
   "haveAccount": "Already have an account?  ",
   "hourly": "Hourly",
+  "humidity": "Humidity",
   "langChoice": "Choose App Language",
   "languageChoice": "Choose App Language:",
   "locationDenied": "location denied",
@@ -22,5 +23,6 @@
   "signWithFacebook": "Sign in with Facebook",
   "signWithGoogle": "Sign in with Google",
   "welcome": "Welcome",
+  "windSpeed": "Windspeed",
   "withoutAccount": "Continue without account"
 }

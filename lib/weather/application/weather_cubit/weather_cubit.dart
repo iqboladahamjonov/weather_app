@@ -22,24 +22,26 @@ class WeatherCubit extends Cubit<WeatherState> {
       state.maybeWhen(
         failure: (l) {
           ///if location is disabled, then fetch the weather for default Kiev location
-          _refreshWeather(50.450001, 50.450001);
+          _refreshWeather(50.450001, 50.450001, _lang!);
         },
         success: (position) {
-          _refreshWeather(position.latitude, position.longitude);
+          _refreshWeather(position.latitude, position.longitude, _lang!);
         },
         orElse: () {},
       );
     });
   }
-  Future<void> getWeather() async {
+  String? _lang;
+  Future<void> getWeather(String lang) async {
+    _lang = lang;
     locationCubit.fetchLocation();
   }
 
   late StreamSubscription locationCubitSubscription;
 
-  _refreshWeather(double lat, double lon) async {
+  _refreshWeather(double lat, double lon, String lang) async {
     emit(WeatherState.loading());
-    final weatherOrFailure = await _weatherRepository.getWeather(lat, lon);
+    final weatherOrFailure = await _weatherRepository.getWeather(lat, lon, _lang!);
     emit(weatherOrFailure.fold(
       (l) => WeatherState.failure(l),
       (weather) => WeatherState.success(weather),

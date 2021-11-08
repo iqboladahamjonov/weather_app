@@ -4,7 +4,7 @@ import 'package:weather_app/weather/core/infrastructure/weather_remote_service_b
 import 'package:weather_app/weather/infrastructure/weather_dto.dart';
 
 abstract class WeatherRemoteService {
-  Future<RemoteResponse<WeatherDto>> fetchWeatherAll(double lat, double lon);
+  Future<RemoteResponse<WeatherDto>> fetchWeatherAll(double lat, double lon, String lang);
   // Future<RemoteResponse<List<DailyWeatherDto>>> fetchDailyWeather(double lat, double lon);
   // Future<RemoteResponse<List<HourlyWeatherDto>>> fetchHourlyWeather(double lat, double lon);
 }
@@ -14,9 +14,10 @@ class WeatherRemoteServiceImpl extends WeatherRemoteServiceBase implements Weath
   WeatherRemoteServiceImpl(apiClient) : super(apiClient);
 
   @override
-  Future<RemoteResponse<WeatherDto>> fetchWeatherAll(double lat, double lon) async => super.fetchWeather(
+  Future<RemoteResponse<WeatherDto>> fetchWeatherAll(double lat, double lon, String lang) async => super.fetchWeather(
         lat: lat,
         lon: lon,
+        lang: lang,
         dtoDataSelector: (WeatherDto dto) => dto,
       );
 

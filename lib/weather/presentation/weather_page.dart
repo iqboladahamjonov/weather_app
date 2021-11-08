@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/route_manager.dart';
 import 'package:intl/intl.dart';
 import 'package:weather_app/auth/application/auth/auth_bloc.dart';
@@ -8,6 +9,7 @@ import 'package:weather_app/auth/presentation/login_page.dart';
 import 'package:weather_app/core/domain/fresh.dart';
 import 'package:weather_app/core/presentation/toast.dart';
 import 'package:weather_app/core/shared/service_locators.dart';
+import 'package:weather_app/settings/application/locale/locale_cubit.dart';
 import 'package:weather_app/weather/application/location_cubit/location_cubit.dart';
 import 'package:weather_app/weather/application/weather_cubit/weather_cubit.dart';
 import 'package:weather_app/weather/domain/weather.dart';
@@ -29,18 +31,27 @@ class _WeatherPageState extends State<WeatherPage> {
   @override
   Widget build(BuildContext context) {
     final t = AppLocalizations.of(context)!;
-
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (context) => getIt<LocationCubit>()),
-        BlocProvider(create: (context) => getIt<WeatherCubit>()..getWeather()),
+        BlocProvider(create: (context) => getIt<WeatherCubit>()..getWeather(t.localeName)),
       ],
-      child: BlocListener<AuthBloc, AuthState>(
-        listener: (context, state) {
-          if (state is NotAuthenticated) {
-            Get.off(() => LoginPage());
-          }
-        },
+      child: MultiBlocListener(
+        listeners: [
+          BlocListener<AuthBloc, AuthState>(
+            listener: (context, state) {
+              if (state is NotAuthenticated) {
+                Get.off(() => LoginPage());
+              }
+            },
+          ),
+          BlocListener<LocaleCubit, LocaleState>(
+            listener: (context, state) {
+              context.read<WeatherCubit>().getWeather(state.locale!.languageCode);
+            },
+            child: Container(),
+          )
+        ],
         child: Scaffold(
           appBar: AppBar(
             title: BlocBuilder<WeatherCubit, WeatherState>(
@@ -126,6 +137,7 @@ class _WeatherPageState extends State<WeatherPage> {
   }
 
   ListView _hourlyWeatherInfo(Fresh<Weather> weather) {
+    final t = AppLocalizations.of(context)!;
     return ListView.builder(
       padding: EdgeInsets.all(20),
       itemCount: weather.entity.hourly.length,
@@ -140,8 +152,8 @@ class _WeatherPageState extends State<WeatherPage> {
           child: ExpansionTile(
             leading: Column(
               children: [
-                Text(DateFormat('EEE').format(hour.hourDateTime)),
-                Text(DateFormat('Hm').format(hour.hourDateTime)),
+                Text(DateFormat('EEE', t.localeName).format(hour.hourDateTime)),
+                Text(DateFormat('Hm', t.localeName).format(hour.hourDateTime)),
               ],
             ),
             title: Text('${hour.temp.celsius.ceil().toString()}°C'),
@@ -162,6 +174,7 @@ class _WeatherPageState extends State<WeatherPage> {
   }
 
   ListView _dailyWeatherInfo(Fresh<Weather> weather) {
+    final t = AppLocalizations.of(context)!;
     return ListView.builder(
       padding: EdgeInsets.all(20),
       itemCount: weather.entity.daily.length,
@@ -176,12 +189,17 @@ class _WeatherPageState extends State<WeatherPage> {
           child: ExpansionTile(
             leading: Column(
               children: [
-                Text(DateFormat('MMMd').format(day.dayDateTime)),
-                Text(DateFormat('EEE').format(day.dayDateTime)),
+                Text(DateFormat('MMMd', t.localeName).format(day.dayDateTime)),
+                Text(DateFormat('EEE', t.localeName).format(day.dayDateTime)),
               ],
             ),
             // key: PageStorageKey(fio),
-            title: Text('${day.temp.day.celsius.ceil().toString()}°C'),
+            title: Row(
+              children: [
+                Text('${day.temp.day.celsius.ceil().toString()}°C   '),
+                // Text('${day.weatherInfo[0].icon}'),
+              ],
+            ),
             trailing: Column(
               children: [
                 Text(day.weatherInfo[0].main.toString()),
@@ -190,8 +208,8 @@ class _WeatherPageState extends State<WeatherPage> {
             ),
             children: [
               Text(day.weatherInfo[0].description.toString()),
-              Text('Humidity - ${day.humidity.toString()}'),
-              Text('Windspeed - ${day.windSpeed.toString()}'),
+              Text('${t.humidity} - ${day.humidity.toString()}'),
+              Text('${t.windSpeed} - ${day.windSpeed.toString()}'),
             ],
           ),
         );

@@ -3,6 +3,7 @@
   "en": "Англиский",
   "haveAccount": "Уже есть аккаунт? ",
   "hourly": "По часам",
+  "humidity": "Влажность",
   "langChoice": "Выбор языка:",
   "languageChoice": "Выберите язык приложения:",
   "locationDenied": "местоположение отклонено",
@@ -22,5 +23,6 @@
   "signWithFacebook": "Войти через Facebook",
   "signWithGoogle": "Войти через Google",
   "welcome": "Добро пожаловать",
+  "windSpeed": "Скорость ветра",
   "withoutAccount": "Продолжить без аккаунта"
 }

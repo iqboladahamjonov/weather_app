@@ -15,9 +15,9 @@ class WeatherRepositoryImpl implements WeatherRepository {
   WeatherRepositoryImpl(this._remoteService, this._localService);
 
   @override
-  Future<Either<WeatherFailure, Fresh<Weather>>> getWeather(double lat, double lon) async {
+  Future<Either<WeatherFailure, Fresh<Weather>>> getWeather(double lat, double lon, String lang) async {
     try {
-      final remoteResponse = await _remoteService.fetchWeatherAll(lat, lon);
+      final remoteResponse = await _remoteService.fetchWeatherAll(lat, lon, lang);
       return right(
         await remoteResponse.when(
           noConnection: () async => Fresh.no(await _localService.getLastWeatherDto().then((_) => _.toDomain())),

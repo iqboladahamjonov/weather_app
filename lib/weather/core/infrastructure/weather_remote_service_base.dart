@@ -12,10 +12,11 @@ abstract class WeatherRemoteServiceBase {
   Future<RemoteResponse<T>> fetchWeather<T>({
     required double lat,
     required double lon,
+    required String lang,
     required T Function(WeatherDto dto) dtoDataSelector,
   }) async {
     try {
-      final response = await _apiClient.dio.get('lat=${lat}&lon=${lon}');
+      final response = await _apiClient.dio.get('lat=${lat}&lon=${lon}&lang=$lang');
       if (response.statusCode == 200) {
         final WeatherDto weatherDto = WeatherDto.fromJson(response.data as Map<String, dynamic>);
         return RemoteResponse.withNewData(dtoDataSelector(weatherDto));
