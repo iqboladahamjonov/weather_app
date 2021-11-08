@@ -1,7 +1,9 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/route_manager.dart';
 import 'package:weather_app/auth/application/auth/auth_bloc.dart';
@@ -14,12 +16,20 @@ import 'package:weather_app/settings/application/locale/locale_cubit.dart';
 import 'package:weather_app/splash/presentation/splash_page.dart';
 import 'package:weather_app/weather/presentation/weather_page.dart';
 
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await di.init();
   await Firebase.initializeApp();
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: [SystemUiOverlay.bottom, SystemUiOverlay.top]);
+  FirebaseMessaging.onBackgroundMessage(firebaseMessageBackgroundHandler);
+
+  await flutterLocalNotificationsPlugin
+    .resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()
+    ?.createNotificationChannel(channel);
+
+  // TODO: add guardedZone after logging is set up
   runApp(const AppWidget());
 }
 

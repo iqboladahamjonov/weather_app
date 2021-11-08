@@ -1,7 +1,84 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:firebase_core/firebase_core.dart';
 
-class Splash extends StatelessWidget {
+
+const AndroidNotificationChannel channel = AndroidNotificationChannel(
+    'high_importance_channel',
+    'High Importance Notifications',
+    importance: Importance.high,
+    playSound: true
+);
+
+final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+FlutterLocalNotificationsPlugin();
+
+Future<void> firebaseMessageBackgroundHandler(RemoteMessage message) async {
+  await Firebase.initializeApp();
+  print('A background message just showed up: ${message.messageId}');
+}
+
+
+class Splash extends StatefulWidget {
   const Splash({Key? key}) : super(key: key);
+
+  @override
+  State<Splash> createState() => _SplashState();
+}
+
+class _SplashState extends State<Splash> {
+
+  late FirebaseMessaging messaging;
+
+  @override
+  void initState() {
+    super.initState();
+
+    messaging = FirebaseMessaging.instance;
+    messaging.getToken().then((value){
+      print(value);
+    });
+
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      RemoteNotification? notification = message.notification;
+      AndroidNotification? android = message.notification?.android;
+      if(notification != null && android != null){
+        flutterLocalNotificationsPlugin.show(
+            notification.hashCode,
+            notification.title,
+            notification.body,
+            NotificationDetails(
+                android: AndroidNotificationDetails(
+                    channel.id,
+                    channel.name,
+                    channelDescription: channel.description,
+                    color: Colors.blue,
+                    playSound: true,
+                    icon: '@mipmap/ic_launcher',
+                    fullScreenIntent: true
+                )
+            ));
+
+        // TODO: Handle new notification
+
+      }
+
+
+    });
+
+
+    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+      print('A new onMessageOpenedApp event was published!');
+      RemoteNotification? notification = message.notification;
+      AndroidNotification? android = message.notification?.android;
+      if(notification != null && android != null) {
+          // TODO: Handle new notification
+        }
+    });
+
+
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +92,7 @@ class Splash extends StatelessWidget {
     );
   }
 }
-
+ 
 class Init {
   Init._();
   static final instance = Init._();
@@ -24,6 +101,9 @@ class Init {
     // This is where you can initialize the resources needed by your app while
     // the splash screen is displayed.  Remove the following example because
     // delaying the user experience is a bad design practice!
+
+
+
     await Future.delayed(const Duration(seconds: 3));
   }
 }
