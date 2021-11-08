@@ -1,7 +1,18 @@
 {
   "en": "Англиский",
+  "haveAccount": "Уже есть аккаунт? ",
   "langChoice": "Выбор языка:",
   "languageChoice": "Выберите язык приложения:",
+  "login": "Логин",
+  "loginSuggestion": "Войдите в свою учетную запись для лучшего опыта",
+  "logout": "Выйти",
   "ru": "Русский",
-  "settingsPage": "Экран настроек"
+  "screenDesc": "Приложение \"Погода\" на базе OpenWeatherMap API",
+  "settingsPage": "Экран настроек",
+  "signInWithAccount": "Войти с учетной записью",
+  "signUp": "Войти",
+  "signWithFacebook": "Войти через Facebook",
+  "signWithGoogle": "Войти через Google",
+  "welcome": "Добро пожаловать",
+  "withoutAccount": "Продолжить без аккаунта"
 }

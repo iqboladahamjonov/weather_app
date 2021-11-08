@@ -1,7 +1,18 @@
 {
   "en": "English",
+  "haveAccount": "Already have an account?  ",
   "langChoice": "Choose App Language",
   "languageChoice": "Choose App Language:",
+  "login": "Log in",
+  "loginSuggestion": "Login to your account for better experience",
+  "logout": "Logout",
   "ru": "Russian",
-  "settingsPage": "Settings Screen"
+  "screenDesc": "Weather App powered by OpenWeatherMap API",
+  "settingsPage": "Settings Screen",
+  "signInWithAccount": "Sign in with account",
+  "signUp": "Sign In",
+  "signWithFacebook": "Sign in with Facebook",
+  "signWithGoogle": "Sign in with Google",
+  "welcome": "Welcome",
+  "withoutAccount": "Continue without account"
 }
