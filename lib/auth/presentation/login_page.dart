@@ -4,10 +4,9 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/route_manager.dart';
 import 'package:weather_app/auth/application/sign_in/sign_in_cubit.dart';
 import 'package:weather_app/auth/domain/auth_type.dart';
-import 'package:weather_app/core/shared/service_locators.dart';
 import 'package:weather_app/settings/presentation/settings_page.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:weather_app/weather/presentation/weather_home_page.dart';
+import 'package:weather_app/weather/presentation/weather_page.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -19,11 +18,7 @@ class LoginPage extends StatelessWidget {
       listener: (context, state) {
         print(state.toString());
         if (state is SignInSuccess) {
-          Get.to(() => WeatherHomePage(account: state.account));
-          // Navigator.push(
-          //   context,
-          //   MaterialPageRoute(builder: (context) => WeatherHomePage(account: state.account)),
-          // );
+          Get.to(() => WeatherPage(account: state.account));
         }
       },
       child: Scaffold(
@@ -49,11 +44,11 @@ class LoginPage extends StatelessWidget {
                 style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
               const Spacer(),
-              // Image.asset(
-              //   'assets/images/proarea_logo.jpg',
-              //   scale: 2,
-              //   width: 100,
-              // ),
+              Image.asset(
+                'assets/images/proarea_light_logo.jpg',
+                scale: 2,
+                width: 100,
+              ),
               const Spacer(),
               Align(
                 alignment: Alignment.centerLeft,
@@ -90,7 +85,7 @@ class LoginPage extends StatelessWidget {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => WeatherHomePage()),
+                    MaterialPageRoute(builder: (context) => WeatherPage()),
                   );
                 },
                 child: Text(

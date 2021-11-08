@@ -2,7 +2,6 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:weather_app/auth/domain/account.dart';
 import 'package:weather_app/auth/domain/auth_repository.dart';
-import 'package:weather_app/auth/infrastructure/local_service/cache_auth_local_service.dart';
 
 part 'auth_event.dart';
 part 'auth_state.dart';

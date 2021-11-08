@@ -13,6 +13,7 @@ import 'package:weather_app/core/shared/service_locators.dart';
 import 'package:weather_app/settings/application/locale/locale_cubit.dart';
 import 'package:weather_app/splash/presentation/splash_page.dart';
 import 'package:weather_app/weather/presentation/weather_home_page.dart';
+import 'package:weather_app/weather/presentation/weather_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -67,7 +68,7 @@ class AppWidget extends StatelessWidget {
                   getPages: [
                     GetPage(
                       name: '/',
-                      page: () => WeatherHomePage(),
+                      page: () => WeatherPage(),
                     )
                   ],
                 );

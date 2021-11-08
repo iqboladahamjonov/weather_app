@@ -12,7 +12,7 @@ class AuthInitial extends AuthState {}
 class Authenticated extends AuthState {
   final Account account;
 
-  Authenticated(this.account);
+  const Authenticated(this.account);
   @override
   List<Object> get props => [account];
 }
